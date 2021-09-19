@@ -377,6 +377,14 @@ section {
   color: #0563bb;
   line-height: 0;
 }
+.about .content .fst-italic{
+  font-size: 18px;
+  margin-left: 5px;
+}
+.about .content .introduce{
+  font-size: 16px;
+  margin-left: 5px;
+}
 .about .content p:last-child {
   margin-bottom: 0;
 }
@@ -384,7 +392,7 @@ section {
 /*--------------------------------------------------------------
 # Facts
 --------------------------------------------------------------*/
-.facts .count-box {
+/* .facts .count-box {
   padding: 30px 30px 25px 30px;
   margin-top: 30px;
   width: 100%;
@@ -418,7 +426,7 @@ section {
   margin: 0;
   font-family: "Raleway", sans-serif;
   font-size: 14px;
-}
+} */
 
 /*--------------------------------------------------------------
 # Akills
