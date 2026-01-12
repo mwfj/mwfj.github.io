@@ -1,0 +1,104 @@
+/* Main styles for index.html */
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+/* Typing animation for subtitle */
+.typing-cursor::after {
+    content: '|';
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Skill bar animation */
+.skill-bar {
+    transition: width 1.5s ease-out;
+}
+
+/* Fade in animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Nav show/hide */
+.nav-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+.nav-visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Side nav styles */
+#side-nav {
+    width: 72px;
+    overflow: visible;
+}
+.side-nav-hidden {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-100%);
+    pointer-events: none;
+}
+.side-nav-visible {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+    pointer-events: auto;
+}
+.side-nav-item {
+    transition: all 0.3s ease;
+    width: 48px;
+    height: 48px;
+    position: relative;
+}
+.side-nav-item .nav-label {
+    display: none;
+}
+/* Hover state - expand with label */
+.side-nav-item:hover {
+    background-color: #3B82F6 !important;
+    width: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 9999px;
+    position: relative;
+    z-index: 10;
+}
+.side-nav-item:hover .nav-icon {
+    color: white;
+}
+.side-nav-item:hover .nav-label {
+    display: inline;
+    margin-left: 0.5rem;
+    color: white;
+}
+/* Active state - same as hover */
+.side-nav-item.active {
+    background-color: #3B82F6 !important;
+    width: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 9999px;
+    position: relative;
+    z-index: 10;
+}
+.side-nav-item.active .nav-icon {
+    color: white;
+}
+.side-nav-item.active .nav-label {
+    display: inline;
+    margin-left: 0.5rem;
+    color: white;
+}

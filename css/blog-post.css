@@ -1,0 +1,28 @@
+/* Styles for blog-post.html */
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+/* Reading progress bar */
+#progress-bar {
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, #F97316, #FDBA74);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    transition: width 0.1s ease;
+}
+
+/* Code block scrollbar */
+.code-block::-webkit-scrollbar {
+    height: 8px;
+}
+.code-block::-webkit-scrollbar-thumb {
+    background: #4B5563;
+    border-radius: 4px;
+}

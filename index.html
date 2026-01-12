@@ -9,6 +9,7 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <link href="css/main.css" rel="stylesheet"/>
     <script>
         tailwind.config = {
             darkMode: "class",
@@ -35,109 +36,6 @@
             },
         };
     </script>
-    <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .dark ::-webkit-scrollbar-thumb { background: #475569; }
-
-        /* Typing animation for subtitle */
-        .typing-cursor::after {
-            content: '|';
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        /* Skill bar animation */
-        .skill-bar {
-            transition: width 1.5s ease-out;
-        }
-
-        /* Fade in animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Nav show/hide */
-        .nav-hidden {
-            transform: translateY(-100%);
-            opacity: 0;
-        }
-        .nav-visible {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* Side nav styles */
-        #side-nav {
-            width: 72px;
-            overflow: visible;
-        }
-        .side-nav-hidden {
-            opacity: 0;
-            transform: translateY(-50%) translateX(-100%);
-            pointer-events: none;
-        }
-        .side-nav-visible {
-            opacity: 1;
-            transform: translateY(-50%) translateX(0);
-            pointer-events: auto;
-        }
-        .side-nav-item {
-            transition: all 0.3s ease;
-            width: 48px;
-            height: 48px;
-            position: relative;
-        }
-        .side-nav-item .nav-label {
-            display: none;
-        }
-        /* Hover state - expand with label */
-        .side-nav-item:hover {
-            background-color: #3B82F6 !important;
-            width: auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            border-radius: 9999px;
-            position: relative;
-            z-index: 10;
-        }
-        .side-nav-item:hover .nav-icon {
-            color: white;
-        }
-        .side-nav-item:hover .nav-label {
-            display: inline;
-            margin-left: 0.5rem;
-            color: white;
-        }
-        /* Active state - same as hover */
-        .side-nav-item.active {
-            background-color: #3B82F6 !important;
-            width: auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            border-radius: 9999px;
-            position: relative;
-            z-index: 10;
-        }
-        .side-nav-item.active .nav-icon {
-            color: white;
-        }
-        .side-nav-item.active .nav-label {
-            display: inline;
-            margin-left: 0.5rem;
-            color: white;
-        }
-    </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark font-sans transition-colors duration-300">
 
@@ -149,15 +47,9 @@
                     <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-display font-bold text-lg shadow-lg shadow-primary/25 group-hover:shadow-primary/40 transition-shadow">J</div>
                     <span class="font-display font-semibold text-lg text-text-primary-light dark:text-text-primary-dark">Jeremy Ma</span>
                 </a>
-                <div class="hidden md:flex items-center gap-8">
-                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="#home">Home</a>
-                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="#about">About</a>
-                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="#skills">Skills</a>
-                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="#resume">Resume</a>
-                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="#blogs">Blog</a>
-                    <div class="flex items-center gap-3 pl-6 border-l border-gray-200 dark:border-gray-700">
-                        <a href="resume.html" class="bg-primary hover:bg-primary-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm">Full Resume</a>
-                        <a href="blogs.html" class="border border-gray-300 dark:border-gray-600 hover:border-primary hover:text-primary text-sm font-medium px-4 py-2 rounded-lg transition-colors">All Blogs</a>
+                <div class="hidden md:flex items-center gap-3">
+                        <a href="pages/resume.html" class="bg-primary hover:bg-primary-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm">Full Resume</a>
+                        <a href="pages/blogs.html" class="border border-gray-300 dark:border-gray-600 hover:border-primary hover:text-primary text-sm font-medium px-4 py-2 rounded-lg transition-colors">All Blogs</a>
                         <button id="lang-toggle" class="flex items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium">
                             <span class="material-icons-outlined text-lg">language</span>
                             <span>EN</span>
@@ -166,7 +58,6 @@
                             <span class="material-icons-outlined dark:hidden">dark_mode</span>
                             <span class="material-icons-outlined hidden dark:block">light_mode</span>
                         </button>
-                    </div>
                 </div>
                 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800">
                     <span class="material-icons-outlined text-2xl">menu</span>
@@ -175,16 +66,9 @@
         </div>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700">
-            <div class="px-4 py-4 space-y-3">
-                <a class="block text-text-primary-light dark:text-text-primary-dark hover:text-primary py-2" href="#home">Home</a>
-                <a class="block text-text-primary-light dark:text-text-primary-dark hover:text-primary py-2" href="#about">About</a>
-                <a class="block text-text-primary-light dark:text-text-primary-dark hover:text-primary py-2" href="#skills">Skills</a>
-                <a class="block text-text-primary-light dark:text-text-primary-dark hover:text-primary py-2" href="#resume">Resume</a>
-                <a class="block text-text-primary-light dark:text-text-primary-dark hover:text-primary py-2" href="#blogs">Blog</a>
-                <div class="pt-3 border-t border-gray-200 dark:border-gray-700 flex gap-3">
-                    <a href="resume.html" class="flex-1 text-center bg-primary text-white py-2 rounded-lg text-sm font-medium">Full Resume</a>
-                    <a href="blogs.html" class="flex-1 text-center border border-gray-300 dark:border-gray-600 py-2 rounded-lg text-sm font-medium">All Blogs</a>
-                </div>
+            <div class="px-4 py-4 flex gap-3">
+                <a href="pages/resume.html" class="flex-1 text-center bg-primary text-white py-2 rounded-lg text-sm font-medium">Full Resume</a>
+                <a href="pages/blogs.html" class="flex-1 text-center border border-gray-300 dark:border-gray-600 py-2 rounded-lg text-sm font-medium">All Blogs</a>
             </div>
         </div>
     </nav>
@@ -521,7 +405,7 @@
 
             <!-- View Full Resume Button -->
             <div class="mt-16 text-center fade-in">
-                <a href="resume.html" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-medium py-3.5 px-8 rounded-full transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5">
+                <a href="pages/resume.html" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-medium py-3.5 px-8 rounded-full transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5">
                     <span class="material-icons-outlined">description</span>
                     View Full Resume
                 </a>
@@ -632,7 +516,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
                 <!-- Blog Card 1 -->
-                <article class="group cursor-pointer" onclick="window.location.href='blog-post.html'">
+                <article class="group cursor-pointer" onclick="window.location.href='pages/blog-post.html'">
                     <div class="rounded-2xl overflow-hidden mb-4 shadow-lg">
                         <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1034&auto=format&fit=crop"
                              alt="Tech Blog"
@@ -648,7 +532,7 @@
                 </article>
 
                 <!-- Blog Card 2 -->
-                <article class="group cursor-pointer" onclick="window.location.href='blog-post.html'">
+                <article class="group cursor-pointer" onclick="window.location.href='pages/blog-post.html'">
                     <div class="rounded-2xl overflow-hidden mb-4 shadow-lg">
                         <img src="https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?q=80&w=1170&auto=format&fit=crop"
                              alt="Redis Blog"
@@ -664,7 +548,7 @@
                 </article>
 
                 <!-- Blog Card 3 -->
-                <article class="group cursor-pointer" onclick="window.location.href='blog-post.html'">
+                <article class="group cursor-pointer" onclick="window.location.href='pages/blog-post.html'">
                     <div class="rounded-2xl overflow-hidden mb-4 shadow-lg">
                         <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1170&auto=format&fit=crop"
                              alt="Golang Blog"
@@ -682,7 +566,7 @@
 
             <!-- View All Blogs Button -->
             <div class="mt-16 text-center fade-in">
-                <a href="blogs.html" class="inline-flex items-center gap-2 border-2 border-primary text-primary hover:bg-primary hover:text-white font-medium py-3 px-8 rounded-full transition-all hover:-translate-y-0.5">
+                <a href="pages/blogs.html" class="inline-flex items-center gap-2 border-2 border-primary text-primary hover:bg-primary hover:text-white font-medium py-3 px-8 rounded-full transition-all hover:-translate-y-0.5">
                     View All Blogs
                     <span class="material-icons-outlined text-lg">arrow_forward</span>
                 </a>

@@ -9,6 +9,7 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <link href="../css/resume.css" rel="stylesheet"/>
     <script>
         tailwind.config = {
             darkMode: "class",
@@ -35,18 +36,6 @@
             },
         };
     </script>
-    <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .dark ::-webkit-scrollbar-thumb { background: #475569; }
-
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white !important; }
-            .print-break { page-break-before: always; }
-        }
-    </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark font-sans transition-colors duration-300">
 
@@ -54,12 +43,12 @@
     <nav class="no-print sticky top-0 z-50 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <a href="index.html" class="flex items-center gap-2 group">
+                <a href="../index.html" class="flex items-center gap-2 group">
                     <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-display font-bold text-lg shadow-lg shadow-primary/25">J</div>
                     <span class="font-display font-semibold text-lg">Jeremy Ma</span>
                 </a>
                 <div class="hidden md:flex items-center gap-8">
-                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="index.html">Home</a>
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="../index.html">Home</a>
                     <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="index.html#about">About</a>
                     <a class="text-primary font-semibold text-sm" href="resume.html">Resume</a>
                     <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="blogs.html">Blog</a>
@@ -82,7 +71,7 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700">
             <div class="px-4 py-4 space-y-3">
-                <a class="block py-2" href="index.html">Home</a>
+                <a class="block py-2" href="../index.html">Home</a>
                 <a class="block py-2" href="index.html#about">About</a>
                 <a class="block py-2 text-primary font-semibold" href="resume.html">Resume</a>
                 <a class="block py-2" href="blogs.html">Blog</a>
@@ -395,7 +384,7 @@
 
         <!-- Back to Home -->
         <div class="mt-16 text-center no-print">
-            <a href="index.html" class="inline-flex items-center gap-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+            <a href="../index.html" class="inline-flex items-center gap-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
                 <span class="material-icons-outlined">arrow_back</span>
                 Back to Home
             </a>
