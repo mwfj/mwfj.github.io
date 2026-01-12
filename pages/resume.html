@@ -47,21 +47,17 @@
                     <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-display font-bold text-lg shadow-lg shadow-primary/25">J</div>
                     <span class="font-display font-semibold text-lg">Jeremy Ma</span>
                 </a>
-                <div class="hidden md:flex items-center gap-8">
-                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="../index.html">Home</a>
-                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="index.html#about">About</a>
-                    <a class="text-primary font-semibold text-sm" href="resume.html">Resume</a>
-                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="blogs.html">Blog</a>
-                    <div class="flex items-center gap-3 pl-6 border-l border-gray-200 dark:border-gray-700">
-                        <button onclick="window.print()" class="flex items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium">
-                            <span class="material-icons-outlined text-lg">print</span>
-                            Print
-                        </button>
-                        <button id="theme-toggle" class="p-2 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                            <span class="material-icons-outlined dark:hidden">dark_mode</span>
-                            <span class="material-icons-outlined hidden dark:block">light_mode</span>
-                        </button>
-                    </div>
+                <div class="hidden md:flex items-center gap-3">
+                    <a href="../index.html" class="border border-gray-300 dark:border-gray-600 hover:border-primary hover:text-primary text-sm font-medium px-4 py-2 rounded-lg transition-colors">Back to Home</a>
+                    <a href="blogs.html" class="border border-gray-300 dark:border-gray-600 hover:border-primary hover:text-primary text-sm font-medium px-4 py-2 rounded-lg transition-colors">All Blogs</a>
+                    <button onclick="window.print()" class="flex items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium px-3 py-2">
+                        <span class="material-icons-outlined text-lg">print</span>
+                        Print
+                    </button>
+                    <button id="theme-toggle" class="p-2 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <span class="material-icons-outlined dark:hidden">dark_mode</span>
+                        <span class="material-icons-outlined hidden dark:block">light_mode</span>
+                    </button>
                 </div>
                 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-text-secondary-light dark:text-text-secondary-dark">
                     <span class="material-icons-outlined text-2xl">menu</span>
@@ -70,11 +66,9 @@
         </div>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700">
-            <div class="px-4 py-4 space-y-3">
-                <a class="block py-2" href="../index.html">Home</a>
-                <a class="block py-2" href="index.html#about">About</a>
-                <a class="block py-2 text-primary font-semibold" href="resume.html">Resume</a>
-                <a class="block py-2" href="blogs.html">Blog</a>
+            <div class="px-4 py-4 flex gap-3">
+                <a href="../index.html" class="flex-1 text-center border border-gray-300 dark:border-gray-600 py-2 rounded-lg text-sm font-medium">Back to Home</a>
+                <a href="blogs.html" class="flex-1 text-center border border-gray-300 dark:border-gray-600 py-2 rounded-lg text-sm font-medium">All Blogs</a>
             </div>
         </div>
     </nav>
