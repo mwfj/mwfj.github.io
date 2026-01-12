@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Resume - Jeremy Ma | Backend Software Engineer</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#F97316",
+                        "primary-dark": "#EA580C",
+                        "primary-light": "#FDBA74",
+                        "background-light": "#FAFAFA",
+                        "background-dark": "#0F172A",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E293B",
+                        "text-primary-light": "#1E293B",
+                        "text-primary-dark": "#F1F5F9",
+                        "text-secondary-light": "#64748B",
+                        "text-secondary-dark": "#94A3B8",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "Noto Sans SC", "sans-serif"],
+                        display: ["Poppins", "Noto Sans SC", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            .print-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark font-sans transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="no-print sticky top-0 z-50 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-display font-bold text-lg shadow-lg shadow-primary/25">J</div>
+                    <span class="font-display font-semibold text-lg">Jeremy Ma</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="index.html">Home</a>
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="index.html#about">About</a>
+                    <a class="text-primary font-semibold text-sm" href="resume.html">Resume</a>
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="blogs.html">Blog</a>
+                    <div class="flex items-center gap-3 pl-6 border-l border-gray-200 dark:border-gray-700">
+                        <button onclick="window.print()" class="flex items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium">
+                            <span class="material-icons-outlined text-lg">print</span>
+                            Print
+                        </button>
+                        <button id="theme-toggle" class="p-2 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                            <span class="material-icons-outlined dark:hidden">dark_mode</span>
+                            <span class="material-icons-outlined hidden dark:block">light_mode</span>
+                        </button>
+                    </div>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-text-secondary-light dark:text-text-secondary-dark">
+                    <span class="material-icons-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700">
+            <div class="px-4 py-4 space-y-3">
+                <a class="block py-2" href="index.html">Home</a>
+                <a class="block py-2" href="index.html#about">About</a>
+                <a class="block py-2 text-primary font-semibold" href="resume.html">Resume</a>
+                <a class="block py-2" href="blogs.html">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-display font-bold text-text-primary-light dark:text-text-primary-dark mb-2">
+                Wufangjie (Jeremy) Ma
+            </h1>
+            <p class="text-lg text-primary font-medium mb-4">Backend Software Engineer</p>
+            <div class="flex flex-wrap justify-center gap-4 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                <span class="flex items-center gap-1">
+                    <span class="material-icons-outlined text-base">location_on</span>
+                    Suzhou, Jiangsu, China
+                </span>
+                <span class="flex items-center gap-1">
+                    <span class="material-icons-outlined text-base">email</span>
+                    mwfj0215@gmail.com
+                </span>
+                <a href="https://github.com/mwfj" target="_blank" class="flex items-center gap-1 hover:text-primary transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/mwfj/" target="_blank" class="flex items-center gap-1 hover:text-primary transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    LinkedIn
+                </a>
+            </div>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+            <!-- Left Column - Main Content -->
+            <div class="lg:col-span-8 space-y-10">
+                <!-- Work Experience -->
+                <section>
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-primary pb-3">
+                        <span class="material-icons-outlined text-primary text-2xl">work_history</span>
+                        <h2 class="text-xl font-display font-bold uppercase tracking-wide">
+                            Work Experience / 工作经历
+                        </h2>
+                    </div>
+                    <div class="bg-surface-light dark:bg-surface-dark p-6 md:p-8 rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-sm">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-text-primary-light dark:text-text-primary-dark">Backend Software Engineer / 服务器后端开发工程师</h3>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <div class="bg-blue-600 text-white p-1 rounded text-xs font-bold w-6 h-6 flex items-center justify-center">Z</div>
+                                    <h4 class="text-lg font-semibold text-primary">Zoom Workplace</h4>
+                                </div>
+                            </div>
+                            <div class="mt-2 md:mt-0 text-sm text-text-secondary-light dark:text-text-secondary-dark flex flex-col md:items-end gap-1">
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-base">calendar_today</span>
+                                    <span>2021.9 - Present</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-base">place</span>
+                                    <span>Suzhou, Jiangsu</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4 text-sm font-medium text-primary bg-primary/10 p-3 rounded-lg">
+                            Focus: Distributed Backend R&D, Performance Tuning, Redis, AWS DynamoDB
+                        </div>
+                        <div class="space-y-6 text-text-secondary-light dark:text-text-secondary-dark text-sm leading-relaxed">
+                            <div>
+                                <p class="font-semibold mb-2 text-text-primary-light dark:text-text-primary-dark">
+                                    1. Zoom TeamChat/Webinar Backend <span class="text-primary">Performance Optimization</span>
+                                </p>
+                                <div class="pl-4 border-l-2 border-gray-200 dark:border-gray-700 ml-1 space-y-4">
+                                    <div>
+                                        <p class="font-medium text-text-primary-light dark:text-text-primary-dark mb-1">
+                                            (a) <span class="text-primary font-bold">100k+</span> Webinar Attendee List Push Optimization — <span class="text-primary font-bold">10x Improvement</span>
+                                        </p>
+                                        <ul class="list-disc list-inside space-y-1 text-xs md:text-sm">
+                                            <li><strong>Background:</strong> Original architecture couldn't support pushing large attendee lists to presenters in a short time, causing service slowdown</li>
+                                            <li><strong>Solution:</strong> Implemented cache queue + timer strategy to batch join requests and deliver attendee lists in bulk</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-text-primary-light dark:text-text-primary-dark mb-1">
+                                            (b) Historical Message Query Storage Architecture Upgrade — <span class="text-primary font-bold">10x Improvement</span>
+                                        </p>
+                                        <ul class="list-disc list-inside space-y-1 text-xs md:text-sm">
+                                            <li><strong>Background:</strong> Frequent DB throughput limit alerts in production</li>
+                                            <li><strong>Solution:</strong> Introduced coroutine pools for parallel processing, message merging, and TTL-based expiration to avoid DB hotspots</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-text-primary-light dark:text-text-primary-dark mb-1">
+                                            (c) <span class="text-primary font-bold">50k+</span> TeamChat Group Performance Optimization
+                                        </p>
+                                        <ul class="list-disc list-inside space-y-1 text-xs md:text-sm">
+                                            <li><strong>Solution:</strong> Dedicated coroutine pool + node-based message batching to improve message forwarding throughput</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-text-primary-light dark:text-text-primary-dark mb-1">
+                                            (d) Back-pressure Mechanism for Channel Edit Messages
+                                        </p>
+                                        <ul class="list-disc list-inside space-y-1 text-xs md:text-sm">
+                                            <li>Prevented main coroutine blocking caused by excessive channel settings messages</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="font-semibold mb-2 text-text-primary-light dark:text-text-primary-dark">
+                                    2. Zoom TeamChat <span class="text-primary">Feature Development</span>
+                                </p>
+                                <ul class="list-disc list-inside pl-4 space-y-1">
+                                    <li>Group owner can delete member messages</li>
+                                    <li>Multi-device login limit validation for TeamChat clients</li>
+                                    <li>1-on-1 meeting invitation conflict detection</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Projects -->
+                <section>
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-primary pb-3">
+                        <span class="material-icons-outlined text-primary text-2xl">code</span>
+                        <h2 class="text-xl font-display font-bold uppercase tracking-wide">
+                            Selected Projects / 个人项目
+                        </h2>
+                    </div>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-icons-outlined text-text-secondary-light dark:text-text-secondary-dark">terminal</span>
+                                <h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark">MIT 6.5840 Distributed Systems Course</h3>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs text-text-secondary-light dark:text-text-secondary-dark mb-3">
+                                <span class="material-icons-outlined text-sm">calendar_month</span>
+                                Feb 2025 - Jun 2025
+                            </div>
+                            <div class="text-sm font-medium text-primary mb-3">
+                                Tech Stack: Distributed Systems, Raft Algorithm, Golang
+                            </div>
+                            <a class="text-xs text-primary hover:underline break-all block mb-3" href="https://github.com/mwfj/6.5840-Distributed-Systems" target="_blank">
+                                https://github.com/mwfj/6.5840-Distributed-Systems
+                            </a>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                Implemented <span class="text-primary font-bold">Raft consensus algorithm</span> based on the paper:
+                                <br/>1. Leader Election  2. Log Compaction (Snapshot)  3. Log Replication
+                            </p>
+                        </div>
+                        <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-icons-outlined text-text-secondary-light dark:text-text-secondary-dark">smart_toy</span>
+                                <h3 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark">AI Application Tools Learning</h3>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs text-text-secondary-light dark:text-text-secondary-dark mb-3">
+                                <span class="material-icons-outlined text-sm">calendar_month</span>
+                                May 2025 - Present
+                            </div>
+                            <ul class="list-disc list-inside space-y-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                <li>Proficient with Claude Code, ChatGPT CodeX for AI-assisted development</li>
+                                <li>Following latest LLM application technologies: RAG, MCP, etc.</li>
+                                <li>Familiar with mainstream LLM frameworks: LangChain, ChromaDB</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column - Sidebar -->
+            <div class="lg:col-span-4 space-y-10">
+                <!-- Education -->
+                <section>
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-primary pb-3">
+                        <span class="material-icons-outlined text-primary text-2xl">school</span>
+                        <h2 class="text-lg font-display font-bold uppercase tracking-wide">
+                            Education / 教育情况
+                        </h2>
+                    </div>
+                    <div class="space-y-8 relative">
+                        <div class="absolute left-2.5 top-3 bottom-3 w-0.5 bg-gray-200 dark:bg-gray-700"></div>
+                        <div class="relative pl-8">
+                            <div class="absolute left-0 top-1.5 w-5 h-5 bg-surface-light dark:bg-surface-dark border-2 border-primary rounded-full z-10"></div>
+                            <h3 class="text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark">M.S. in Computer Science</h3>
+                            <h4 class="text-base font-bold text-primary leading-tight mb-2">
+                                Clemson University
+                            </h4>
+                            <div class="flex flex-col gap-1 text-xs text-text-secondary-light dark:text-text-secondary-dark mb-2">
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-xs">event</span>
+                                    Aug 2018 - May 2020
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-xs">location_on</span>
+                                    Clemson, SC, USA
+                                </div>
+                            </div>
+                            <p class="text-xs italic text-text-secondary-light dark:text-text-secondary-dark bg-gray-50 dark:bg-gray-800/50 p-2 rounded">
+                                "Top 70 Research University, Top 25 Public University"
+                            </p>
+                        </div>
+                        <div class="relative pl-8">
+                            <div class="absolute left-0 top-1.5 w-5 h-5 bg-surface-light dark:bg-surface-dark border-2 border-gray-300 dark:border-gray-600 rounded-full z-10"></div>
+                            <h3 class="text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark">B.S. in Network Engineering</h3>
+                            <h4 class="text-base font-bold text-primary leading-tight mb-2">
+                                Southwest Minzu University
+                            </h4>
+                            <div class="flex flex-col gap-1 text-xs text-text-secondary-light dark:text-text-secondary-dark mb-2">
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-xs">event</span>
+                                    Aug 2012 - Jul 2016
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-outlined text-xs">location_on</span>
+                                    Chengdu, Sichuan
+                                </div>
+                            </div>
+                            <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark bg-gray-50 dark:bg-gray-800/50 p-2 rounded">
+                                National 3rd Prize - National College SDN Competition
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Skills -->
+                <section>
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-primary pb-3">
+                        <span class="material-icons-outlined text-primary text-2xl">psychology</span>
+                        <h2 class="text-lg font-display font-bold uppercase tracking-wide">
+                            Skills / 擅长领域
+                        </h2>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg text-sm shadow-sm">Distributed Systems</span>
+                        <span class="px-3 py-1.5 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg text-sm shadow-sm">Linux / OS</span>
+                        <span class="px-3 py-1.5 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg text-sm shadow-sm">Reactor Model</span>
+                        <span class="px-3 py-1.5 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg text-sm shadow-sm">Raft Algorithm</span>
+                        <span class="px-3 py-1.5 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg text-sm shadow-sm">C++</span>
+                        <span class="px-3 py-1.5 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg text-sm shadow-sm">Golang</span>
+                        <span class="px-3 py-1.5 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg text-sm shadow-sm">Erlang</span>
+                        <span class="px-3 py-1.5 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg text-sm shadow-sm">English</span>
+                    </div>
+                </section>
+
+                <!-- Language Tests -->
+                <section>
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-primary pb-3">
+                        <span class="material-icons-outlined text-primary text-2xl">language</span>
+                        <h2 class="text-lg font-display font-bold uppercase tracking-wide">
+                            Language Tests
+                        </h2>
+                    </div>
+                    <ul class="space-y-2 text-sm text-text-primary-light dark:text-text-primary-dark">
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-primary"></span>
+                            TOEFL: <span class="font-bold">90</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-primary"></span>
+                            GRE: <span class="font-bold">308</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-primary"></span>
+                            CET-6: <span class="font-bold">450</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Awards -->
+                <section>
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-primary pb-3">
+                        <span class="material-icons-outlined text-primary text-2xl">emoji_events</span>
+                        <h2 class="text-lg font-display font-bold uppercase tracking-wide">
+                            Awards / 个人荣誉
+                        </h2>
+                    </div>
+                    <div class="bg-primary/10 p-4 rounded-lg border border-primary/20">
+                        <p class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">
+                            2022 Zoom Team Star
+                            <br/><span class="text-xs text-text-secondary-light dark:text-text-secondary-dark">(Best Employee Award)</span>
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Certifications -->
+                <section>
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-primary pb-3">
+                        <span class="material-icons-outlined text-primary text-2xl">verified</span>
+                        <h2 class="text-lg font-display font-bold uppercase tracking-wide">
+                            Certifications
+                        </h2>
+                    </div>
+                    <div>
+                        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-1">Claude Code Course Completion</p>
+                        <p class="font-bold text-primary text-sm mb-2">
+                            Issued by DeepLearning.AI & Anthropic
+                        </p>
+                        <a class="text-xs text-text-secondary-light dark:text-text-secondary-dark hover:text-primary break-all" href="https://learn.deeplearning.ai/accomplishments/1ba66ab3-818f-41a2-becd-b3596" target="_blank">
+                            View Certificate
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="mt-16 text-center no-print">
+            <a href="index.html" class="inline-flex items-center gap-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                <span class="material-icons-outlined">arrow_back</span>
+                Back to Home
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print bg-surface-light dark:bg-surface-dark py-8 border-t border-gray-100 dark:border-gray-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                &copy; 2025 Wufangjie (Jeremy) Ma. All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

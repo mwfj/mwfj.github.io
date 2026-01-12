@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Jeremy Ma - Backend Software Engineer</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#F97316",
+                        "primary-dark": "#EA580C",
+                        "primary-light": "#FDBA74",
+                        "background-light": "#FAFAFA",
+                        "background-dark": "#0F172A",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E293B",
+                        "text-primary-light": "#1E293B",
+                        "text-primary-dark": "#F1F5F9",
+                        "text-secondary-light": "#64748B",
+                        "text-secondary-dark": "#94A3B8",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "Noto Sans SC", "sans-serif"],
+                        display: ["Poppins", "Noto Sans SC", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+        /* Typing animation for subtitle */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Skill bar animation */
+        .skill-bar {
+            transition: width 1.5s ease-out;
+        }
+
+        /* Fade in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Nav show/hide */
+        .nav-hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        .nav-visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Dot nav active state */
+        .dot-nav-item.active span:first-child {
+            background-color: #F97316;
+            transform: scale(1.3);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark font-sans transition-colors duration-300">
+
+    <!-- Top Navigation Bar (Hidden initially, appears on scroll) -->
+    <nav id="main-nav" class="fixed w-full z-50 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 transition-all duration-500 nav-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="#home" class="flex items-center gap-2 group">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-display font-bold text-lg shadow-lg shadow-primary/25 group-hover:shadow-primary/40 transition-shadow">J</div>
+                    <span class="font-display font-semibold text-lg text-text-primary-light dark:text-text-primary-dark">Jeremy Ma</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="#home">Home</a>
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="#about">About</a>
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="#skills">Skills</a>
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="#resume">Resume</a>
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="#blogs">Blog</a>
+                    <div class="flex items-center gap-3 pl-6 border-l border-gray-200 dark:border-gray-700">
+                        <a href="resume.html" class="bg-primary hover:bg-primary-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm">Full Resume</a>
+                        <a href="blogs.html" class="border border-gray-300 dark:border-gray-600 hover:border-primary hover:text-primary text-sm font-medium px-4 py-2 rounded-lg transition-colors">All Blogs</a>
+                        <button id="lang-toggle" class="flex items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium">
+                            <span class="material-icons-outlined text-lg">language</span>
+                            <span>EN</span>
+                        </button>
+                        <button id="theme-toggle" class="p-2 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                            <span class="material-icons-outlined dark:hidden">dark_mode</span>
+                            <span class="material-icons-outlined hidden dark:block">light_mode</span>
+                        </button>
+                    </div>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <span class="material-icons-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700">
+            <div class="px-4 py-4 space-y-3">
+                <a class="block text-text-primary-light dark:text-text-primary-dark hover:text-primary py-2" href="#home">Home</a>
+                <a class="block text-text-primary-light dark:text-text-primary-dark hover:text-primary py-2" href="#about">About</a>
+                <a class="block text-text-primary-light dark:text-text-primary-dark hover:text-primary py-2" href="#skills">Skills</a>
+                <a class="block text-text-primary-light dark:text-text-primary-dark hover:text-primary py-2" href="#resume">Resume</a>
+                <a class="block text-text-primary-light dark:text-text-primary-dark hover:text-primary py-2" href="#blogs">Blog</a>
+                <div class="pt-3 border-t border-gray-200 dark:border-gray-700 flex gap-3">
+                    <a href="resume.html" class="flex-1 text-center bg-primary text-white py-2 rounded-lg text-sm font-medium">Full Resume</a>
+                    <a href="blogs.html" class="flex-1 text-center border border-gray-300 dark:border-gray-600 py-2 rounded-lg text-sm font-medium">All Blogs</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Side Dot Navigation -->
+    <nav id="dot-nav" class="hidden lg:flex fixed left-6 top-1/2 -translate-y-1/2 z-40 flex-col gap-5 p-3 rounded-full bg-surface-light/60 dark:bg-surface-dark/60 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 shadow-lg transition-all duration-300">
+        <a href="#home" class="dot-nav-item group relative flex items-center justify-center w-4 h-4" data-section="home">
+            <span class="w-2.5 h-2.5 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-primary transition-all duration-300"></span>
+            <span class="absolute left-8 px-3 py-1.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-lg">Home</span>
+        </a>
+        <a href="#about" class="dot-nav-item group relative flex items-center justify-center w-4 h-4" data-section="about">
+            <span class="w-2.5 h-2.5 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-primary transition-all duration-300"></span>
+            <span class="absolute left-8 px-3 py-1.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-lg">About</span>
+        </a>
+        <a href="#skills" class="dot-nav-item group relative flex items-center justify-center w-4 h-4" data-section="skills">
+            <span class="w-2.5 h-2.5 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-primary transition-all duration-300"></span>
+            <span class="absolute left-8 px-3 py-1.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-lg">Skills</span>
+        </a>
+        <a href="#resume" class="dot-nav-item group relative flex items-center justify-center w-4 h-4" data-section="resume">
+            <span class="w-2.5 h-2.5 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-primary transition-all duration-300"></span>
+            <span class="absolute left-8 px-3 py-1.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-lg">Resume</span>
+        </a>
+        <a href="#portfolio" class="dot-nav-item group relative flex items-center justify-center w-4 h-4" data-section="portfolio">
+            <span class="w-2.5 h-2.5 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-primary transition-all duration-300"></span>
+            <span class="absolute left-8 px-3 py-1.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-lg">Portfolio</span>
+        </a>
+        <a href="#blogs" class="dot-nav-item group relative flex items-center justify-center w-4 h-4" data-section="blogs">
+            <span class="w-2.5 h-2.5 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-primary transition-all duration-300"></span>
+            <span class="absolute left-8 px-3 py-1.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-lg">Blog</span>
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+                 alt="Abstract tech background"
+                 class="w-full h-full object-cover"/>
+            <div class="absolute inset-0 bg-gradient-to-b from-background-light/80 via-background-light/60 to-background-light dark:from-background-dark/90 dark:via-background-dark/70 dark:to-background-dark"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-display font-bold text-text-primary-light dark:text-text-primary-dark mb-6 tracking-tight leading-tight">
+                Hi there,<br/>
+                I'm <span class="text-primary">Wufangjie (Jeremy) Ma</span>
+            </h1>
+            <p class="text-xl sm:text-2xl text-text-secondary-light dark:text-text-secondary-dark mb-4 font-light">
+                A <span class="font-medium text-primary">Clemson Tiger</span> & Backend Software Engineer
+            </p>
+            <p id="typing-text" class="text-lg text-text-secondary-light dark:text-text-secondary-dark mb-10 h-8 typing-cursor"></p>
+
+            <!-- Social Links -->
+            <div class="flex justify-center gap-6 mb-12">
+                <a href="https://github.com/mwfj" target="_blank" class="p-3 rounded-full bg-surface-light/80 dark:bg-surface-dark/80 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary hover:bg-surface-light dark:hover:bg-surface-dark shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/mwfj/" target="_blank" class="p-3 rounded-full bg-surface-light/80 dark:bg-surface-dark/80 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary hover:bg-surface-light dark:hover:bg-surface-dark shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+                <a href="mailto:mwfj0215@gmail.com" class="p-3 rounded-full bg-surface-light/80 dark:bg-surface-dark/80 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary hover:bg-surface-light dark:hover:bg-surface-dark shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <span class="material-icons-outlined text-2xl">email</span>
+                </a>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#portfolio" class="bg-primary hover:bg-primary-dark text-white px-8 py-3.5 rounded-full font-medium transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    View Portfolio <span class="material-icons-outlined text-lg">arrow_downward</span>
+                </a>
+                <a href="#about" class="bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-text-primary-light dark:text-text-primary-dark hover:border-primary px-8 py-3.5 rounded-full font-medium transition-all shadow-lg hover:-translate-y-0.5">
+                    More About Me
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <a href="#about" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                <span class="material-icons-outlined text-3xl">expand_more</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-surface-light dark:bg-surface-dark transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                <!-- Image -->
+                <div class="w-full lg:w-2/5 flex justify-center fade-in">
+                    <div class="relative group">
+                        <div class="absolute -inset-2 bg-gradient-to-r from-primary via-primary-light to-primary rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition duration-500"></div>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=987&auto=format&fit=crop"
+                             alt="Jeremy Ma Profile"
+                             class="relative rounded-2xl shadow-2xl w-full max-w-sm object-cover aspect-[4/5] bg-gray-200"/>
+                        <div class="absolute bottom-4 left-4 right-4 bg-surface-light/95 dark:bg-surface-dark/95 backdrop-blur-sm px-5 py-3 rounded-xl shadow-lg">
+                            <p class="font-display font-bold text-text-primary-light dark:text-text-primary-dark">Backend Engineer</p>
+                            <p class="text-sm text-primary">Zoom Workplace</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="w-full lg:w-3/5 fade-in">
+                    <h2 class="text-sm font-bold tracking-widest text-primary uppercase mb-3">About Me</h2>
+                    <h3 class="text-3xl md:text-4xl font-display font-bold text-text-primary-light dark:text-text-primary-dark mb-6">
+                        Backend Software Engineer
+                    </h3>
+                    <div class="prose dark:prose-invert max-w-none text-text-secondary-light dark:text-text-secondary-dark mb-8">
+                        <p class="mb-4 text-lg">
+                            Hi, my name is <strong class="text-text-primary-light dark:text-text-primary-dark">Wufangjie (Jeremy) Ma</strong>. I'm currently a full-time backend software engineer at <span class="text-primary font-semibold">Zoom</span>.
+                        </p>
+                        <p class="mb-4">
+                            Before that, I received my <strong class="text-text-primary-light dark:text-text-primary-dark">Master's Degree in Computer Science</strong> at <span class="text-primary font-semibold">Clemson University</span>. My study interests are <strong class="text-text-primary-light dark:text-text-primary-dark">Operating Systems & Distributed Systems</strong>.
+                        </p>
+                        <ul class="space-y-3 mt-6">
+                            <li class="flex items-start gap-3">
+                                <span class="material-icons-outlined text-primary text-lg mt-0.5">check_circle</span>
+                                <span>Passionate about learning new software-related technologies and coding in my leisure time.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-icons-outlined text-primary text-lg mt-0.5">check_circle</span>
+                                <span><strong class="text-text-primary-light dark:text-text-primary-dark">Patience</strong> and <strong class="text-text-primary-light dark:text-text-primary-dark">optimism</strong> are my greatest strengths when encountering challenges.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Info Cards -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex items-center gap-3 p-4 bg-background-light dark:bg-background-dark rounded-xl">
+                            <div class="p-2 bg-primary/10 rounded-lg text-primary">
+                                <span class="material-icons-outlined">school</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark uppercase font-semibold">Degree</p>
+                                <p class="font-medium text-text-primary-light dark:text-text-primary-dark text-sm">M.S. Computer Science</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 bg-background-light dark:bg-background-dark rounded-xl">
+                            <div class="p-2 bg-primary/10 rounded-lg text-primary">
+                                <span class="material-icons-outlined">location_on</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark uppercase font-semibold">Location</p>
+                                <p class="font-medium text-text-primary-light dark:text-text-primary-dark text-sm">Suzhou, China</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 bg-background-light dark:bg-background-dark rounded-xl">
+                            <div class="p-2 bg-primary/10 rounded-lg text-primary">
+                                <span class="material-icons-outlined">email</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark uppercase font-semibold">Email</p>
+                                <p class="font-medium text-text-primary-light dark:text-text-primary-dark text-sm break-all">mwfj0215@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 bg-background-light dark:bg-background-dark rounded-xl">
+                            <div class="p-2 bg-primary/10 rounded-lg text-primary">
+                                <span class="material-icons-outlined">work</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark uppercase font-semibold">Current Role</p>
+                                <p class="font-medium text-text-primary-light dark:text-text-primary-dark text-sm">Zoom Workplace</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 bg-background-light dark:bg-background-dark transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-sm font-bold tracking-widest text-primary uppercase mb-2">My Expertise</h2>
+                <h3 class="text-3xl md:text-4xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">Technical Skills</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 fade-in">
+                <!-- Skill Items -->
+                <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-semibold text-text-primary-light dark:text-text-primary-dark">C++ / Golang</span>
+                        <span class="text-primary font-bold text-sm">90%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                        <div class="skill-bar bg-gradient-to-r from-primary to-primary-light h-2.5 rounded-full" data-width="90"></div>
+                    </div>
+                </div>
+
+                <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-semibold text-text-primary-light dark:text-text-primary-dark">Distributed Systems (Raft, MapReduce)</span>
+                        <span class="text-primary font-bold text-sm">85%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                        <div class="skill-bar bg-gradient-to-r from-primary to-primary-light h-2.5 rounded-full" data-width="85"></div>
+                    </div>
+                </div>
+
+                <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-semibold text-text-primary-light dark:text-text-primary-dark">Linux / Operating Systems</span>
+                        <span class="text-primary font-bold text-sm">80%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                        <div class="skill-bar bg-gradient-to-r from-primary to-primary-light h-2.5 rounded-full" data-width="80"></div>
+                    </div>
+                </div>
+
+                <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-semibold text-text-primary-light dark:text-text-primary-dark">Erlang</span>
+                        <span class="text-primary font-bold text-sm">75%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                        <div class="skill-bar bg-gradient-to-r from-primary to-primary-light h-2.5 rounded-full" data-width="75"></div>
+                    </div>
+                </div>
+
+                <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-semibold text-text-primary-light dark:text-text-primary-dark">Reactor Model / High Concurrency</span>
+                        <span class="text-primary font-bold text-sm">80%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                        <div class="skill-bar bg-gradient-to-r from-primary to-primary-light h-2.5 rounded-full" data-width="80"></div>
+                    </div>
+                </div>
+
+                <div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-semibold text-text-primary-light dark:text-text-primary-dark">English Speaking & Writing</span>
+                        <span class="text-primary font-bold text-sm">90%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                        <div class="skill-bar bg-gradient-to-r from-primary to-primary-light h-2.5 rounded-full" data-width="90"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Tags -->
+            <div class="mt-12 flex flex-wrap justify-center gap-3 fade-in">
+                <span class="px-4 py-2 bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark rounded-full text-sm border border-gray-200 dark:border-gray-700 hover:border-primary hover:text-primary transition-colors cursor-default">Distributed Backend R&D</span>
+                <span class="px-4 py-2 bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark rounded-full text-sm border border-gray-200 dark:border-gray-700 hover:border-primary hover:text-primary transition-colors cursor-default">Performance Tuning</span>
+                <span class="px-4 py-2 bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark rounded-full text-sm border border-gray-200 dark:border-gray-700 hover:border-primary hover:text-primary transition-colors cursor-default">AWS DynamoDB</span>
+                <span class="px-4 py-2 bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark rounded-full text-sm border border-gray-200 dark:border-gray-700 hover:border-primary hover:text-primary transition-colors cursor-default">Redis</span>
+                <span class="px-4 py-2 bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark rounded-full text-sm border border-gray-200 dark:border-gray-700 hover:border-primary hover:text-primary transition-colors cursor-default">Claude Code</span>
+                <span class="px-4 py-2 bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark rounded-full text-sm border border-gray-200 dark:border-gray-700 hover:border-primary hover:text-primary transition-colors cursor-default">LangChain</span>
+                <span class="px-4 py-2 bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark rounded-full text-sm border border-gray-200 dark:border-gray-700 hover:border-primary hover:text-primary transition-colors cursor-default">ChromaDB</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resume Preview Section -->
+    <section id="resume" class="py-24 bg-surface-light dark:bg-surface-dark transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-sm font-bold tracking-widest text-primary uppercase mb-2">Resume</h2>
+                <h3 class="text-3xl md:text-4xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">Education & Experience</h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 fade-in">
+                <!-- Work Experience -->
+                <div>
+                    <h4 class="text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark mb-8 flex items-center gap-3">
+                        <span class="p-2 bg-primary/10 rounded-lg text-primary">
+                            <span class="material-icons-outlined">work</span>
+                        </span>
+                        Work Experience
+                    </h4>
+                    <div class="relative border-l-2 border-gray-200 dark:border-gray-700 ml-4 pl-8 space-y-10">
+                        <div class="relative">
+                            <span class="absolute -left-[41px] top-1 h-5 w-5 rounded-full border-4 border-surface-light dark:border-surface-dark bg-primary shadow-lg"></span>
+                            <div class="mb-2">
+                                <span class="text-xs text-primary font-bold uppercase tracking-wider">2021.9 - Present</span>
+                            </div>
+                            <h5 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark">Backend Software Engineer</h5>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark mb-3">Zoom Workplace | Suzhou, Jiangsu</p>
+                            <ul class="text-text-secondary-light dark:text-text-secondary-dark text-sm space-y-2">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-primary mt-1">-</span>
+                                    <span>Led design for <strong class="text-primary">100k+</strong> Zoom Webinar attendee list pushing optimization</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-primary mt-1">-</span>
+                                    <span>Optimized message storage architecture (<strong class="text-primary">10x improvement</strong>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-primary mt-1">-</span>
+                                    <span>Implemented back-pressure mechanism for channel edit messages</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div>
+                    <h4 class="text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark mb-8 flex items-center gap-3">
+                        <span class="p-2 bg-primary/10 rounded-lg text-primary">
+                            <span class="material-icons-outlined">school</span>
+                        </span>
+                        Education
+                    </h4>
+                    <div class="relative border-l-2 border-gray-200 dark:border-gray-700 ml-4 pl-8 space-y-10">
+                        <div class="relative">
+                            <span class="absolute -left-[41px] top-1 h-5 w-5 rounded-full border-4 border-surface-light dark:border-surface-dark bg-primary shadow-lg"></span>
+                            <div class="mb-2">
+                                <span class="text-xs text-primary font-bold uppercase tracking-wider">2018.8 - 2020.5</span>
+                            </div>
+                            <h5 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark">M.S. in Computer Science</h5>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark mb-2">Clemson University | Clemson, SC, USA</p>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm italic">
+                                "Top 70 Research University in US, Top 25 Public University"
+                            </p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[41px] top-1 h-5 w-5 rounded-full border-4 border-surface-light dark:border-surface-dark bg-gray-400 dark:bg-gray-600"></span>
+                            <div class="mb-2">
+                                <span class="text-xs text-text-secondary-light dark:text-text-secondary-dark font-bold uppercase tracking-wider">2012.8 - 2016.7</span>
+                            </div>
+                            <h5 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark">B.S. in Network Engineering</h5>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark mb-2">Southwest Minzu University | Chengdu, Sichuan</p>
+                            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">
+                                National 3rd Prize in National College SDN Competition
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Full Resume Button -->
+            <div class="mt-16 text-center fade-in">
+                <a href="resume.html" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-medium py-3.5 px-8 rounded-full transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5">
+                    <span class="material-icons-outlined">description</span>
+                    View Full Resume
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 bg-background-light dark:bg-background-dark transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-sm font-bold tracking-widest text-primary uppercase mb-2">Portfolio</h2>
+                <h3 class="text-3xl md:text-4xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">Selected Projects</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 fade-in">
+                <!-- Project Card 1 -->
+                <div class="group bg-surface-light dark:bg-surface-dark rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700/50">
+                    <div class="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-800">
+                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1034&auto=format&fit=crop"
+                             alt="Distributed Systems"
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
+                            <div class="flex gap-2">
+                                <a href="https://github.com/mwfj/6.5840-Distributed-Systems" target="_blank" class="p-2 bg-white rounded-full text-gray-900 hover:text-primary transition-colors">
+                                    <span class="material-icons-outlined text-lg">code</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs text-primary font-bold uppercase mb-2 tracking-wider">Distributed Systems</div>
+                        <h4 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark mb-2 group-hover:text-primary transition-colors">MIT 6.5840 Distributed Course</h4>
+                        <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm mb-4">
+                            Implementation of Raft algorithm: Leader Election, Log Snapshot, and Log Replication.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-xs text-text-secondary-light dark:text-text-secondary-dark rounded-md">Golang</span>
+                            <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-xs text-text-secondary-light dark:text-text-secondary-dark rounded-md">Raft</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 -->
+                <div class="group bg-surface-light dark:bg-surface-dark rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700/50">
+                    <div class="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-800">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1032&auto=format&fit=crop"
+                             alt="AI Application"
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
+                            <div class="flex gap-2">
+                                <a href="#" class="p-2 bg-white rounded-full text-gray-900 hover:text-primary transition-colors">
+                                    <span class="material-icons-outlined text-lg">link</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs text-primary font-bold uppercase mb-2 tracking-wider">Artificial Intelligence</div>
+                        <h4 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark mb-2 group-hover:text-primary transition-colors">AI Application Tools Learning</h4>
+                        <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm mb-4">
+                            Proficient in Claude Code, ChatGPT CodeX. Following latest LLM trends like RAG, MCP, LangChain.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-xs text-text-secondary-light dark:text-text-secondary-dark rounded-md">LLM</span>
+                            <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-xs text-text-secondary-light dark:text-text-secondary-dark rounded-md">LangChain</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="group bg-surface-light dark:bg-surface-dark rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700/50">
+                    <div class="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-800">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1170&auto=format&fit=crop"
+                             alt="Performance Optimization"
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
+                            <div class="flex gap-2">
+                                <a href="#" class="p-2 bg-white rounded-full text-gray-900 hover:text-primary transition-colors">
+                                    <span class="material-icons-outlined text-lg">link</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs text-primary font-bold uppercase mb-2 tracking-wider">Systems Engineering</div>
+                        <h4 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark mb-2 group-hover:text-primary transition-colors">Performance Optimization Framework</h4>
+                        <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm mb-4">
+                            Designed high-throughput messaging systems handling 100k+ concurrent connections.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-xs text-text-secondary-light dark:text-text-secondary-dark rounded-md">C++</span>
+                            <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-xs text-text-secondary-light dark:text-text-secondary-dark rounded-md">Redis</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Preview Section -->
+    <section id="blogs" class="py-24 bg-surface-light dark:bg-surface-dark transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-sm font-bold tracking-widest text-primary uppercase mb-2">Latest News</h2>
+                <h3 class="text-3xl md:text-4xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">Recent Blogs</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
+                <!-- Blog Card 1 -->
+                <article class="group cursor-pointer" onclick="window.location.href='blog-post.html'">
+                    <div class="rounded-2xl overflow-hidden mb-4 shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1034&auto=format&fit=crop"
+                             alt="Tech Blog"
+                             class="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-500"/>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-text-secondary-light dark:text-text-secondary-dark mb-2">
+                        <span class="material-icons-outlined text-sm">calendar_today</span> May 20, 2025
+                    </div>
+                    <h4 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark mb-2 group-hover:text-primary transition-colors">Understanding Raft Consensus Algorithm</h4>
+                    <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm line-clamp-3">
+                        A deep dive into Raft implementation, focusing on leader election and log replication challenges in MIT 6.5840 course.
+                    </p>
+                </article>
+
+                <!-- Blog Card 2 -->
+                <article class="group cursor-pointer" onclick="window.location.href='blog-post.html'">
+                    <div class="rounded-2xl overflow-hidden mb-4 shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?q=80&w=1170&auto=format&fit=crop"
+                             alt="Redis Blog"
+                             class="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-500"/>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-text-secondary-light dark:text-text-secondary-dark mb-2">
+                        <span class="material-icons-outlined text-sm">calendar_today</span> Apr 15, 2025
+                    </div>
+                    <h4 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark mb-2 group-hover:text-primary transition-colors">Optimizing Redis for High Scale</h4>
+                    <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm line-clamp-3">
+                        Techniques for preventing cache stampedes and effectively using Redis pipelines to improve throughput.
+                    </p>
+                </article>
+
+                <!-- Blog Card 3 -->
+                <article class="group cursor-pointer" onclick="window.location.href='blog-post.html'">
+                    <div class="rounded-2xl overflow-hidden mb-4 shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1170&auto=format&fit=crop"
+                             alt="Golang Blog"
+                             class="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-500"/>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-text-secondary-light dark:text-text-secondary-dark mb-2">
+                        <span class="material-icons-outlined text-sm">calendar_today</span> Mar 10, 2025
+                    </div>
+                    <h4 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark mb-2 group-hover:text-primary transition-colors">My Journey with Golang</h4>
+                    <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm line-clamp-3">
+                        Transitioning from C++ to Golang: The pros, cons, and why Go's concurrency model is a game changer.
+                    </p>
+                </article>
+            </div>
+
+            <!-- View All Blogs Button -->
+            <div class="mt-16 text-center fade-in">
+                <a href="blogs.html" class="inline-flex items-center gap-2 border-2 border-primary text-primary hover:bg-primary hover:text-white font-medium py-3 px-8 rounded-full transition-all hover:-translate-y-0.5">
+                    View All Blogs
+                    <span class="material-icons-outlined text-lg">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-primary/5 via-background-light to-primary/10 dark:from-primary/10 dark:via-background-dark dark:to-primary/5 transition-colors duration-300">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in">
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-text-primary-light dark:text-text-primary-dark mb-6">Let's Work Together</h2>
+            <p class="text-text-secondary-light dark:text-text-secondary-dark mb-8 max-w-2xl mx-auto">
+                I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="mailto:mwfj0215@gmail.com" class="bg-primary hover:bg-primary-dark text-white px-8 py-3.5 rounded-full font-medium transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    <span class="material-icons-outlined">email</span>
+                    Send me an Email
+                </a>
+            </div>
+            <div class="flex justify-center gap-6 mt-8">
+                <a href="https://github.com/mwfj" target="_blank" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/mwfj/" target="_blank" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-surface-light dark:bg-surface-dark py-8 border-t border-gray-100 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-display font-bold text-lg text-text-primary-light dark:text-text-primary-dark">Jeremy Ma</span>
+                <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark mt-1">&copy; 2025 Wufangjie Ma. All Rights Reserved.</p>
+            </div>
+            <div class="flex gap-6 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+                <a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#home" id="back-to-top" class="fixed bottom-8 right-8 bg-primary hover:bg-primary-dark text-white p-3 rounded-full shadow-lg z-50 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none">
+        <span class="material-icons-outlined">arrow_upward</span>
+    </a>
+
+    <script>
+        // Typing animation
+        const subtitles = [
+            "Building scalable distributed systems",
+            "Performance optimization enthusiast",
+            "Exploring AI & LLM applications",
+            "Passionate about clean code"
+        ];
+        let currentSubtitle = 0;
+        let currentChar = 0;
+        let isDeleting = false;
+        const typingElement = document.getElementById('typing-text');
+
+        function typeText() {
+            const current = subtitles[currentSubtitle];
+
+            if (isDeleting) {
+                typingElement.textContent = current.substring(0, currentChar - 1);
+                currentChar--;
+            } else {
+                typingElement.textContent = current.substring(0, currentChar + 1);
+                currentChar++;
+            }
+
+            let timeout = isDeleting ? 30 : 80;
+
+            if (!isDeleting && currentChar === current.length) {
+                timeout = 2000;
+                isDeleting = true;
+            } else if (isDeleting && currentChar === 0) {
+                isDeleting = false;
+                currentSubtitle = (currentSubtitle + 1) % subtitles.length;
+                timeout = 500;
+            }
+
+            setTimeout(typeText, timeout);
+        }
+        typeText();
+
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Navigation show/hide on scroll
+        const mainNav = document.getElementById('main-nav');
+        const heroSection = document.getElementById('home');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            const heroBottom = heroSection.offsetHeight - 100;
+
+            if (currentScroll > heroBottom) {
+                mainNav.classList.remove('nav-hidden');
+                mainNav.classList.add('nav-visible');
+            } else {
+                mainNav.classList.add('nav-hidden');
+                mainNav.classList.remove('nav-visible');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // Dot navigation active state
+        const sections = document.querySelectorAll('section[id]');
+        const dotNavItems = document.querySelectorAll('.dot-nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 200;
+                if (window.pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            dotNavItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-section') === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 500) {
+                backToTop.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            } else {
+                backToTop.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            }
+        });
+
+        // Fade in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElements.forEach(el => observer.observe(el));
+
+        // Skill bar animation
+        const skillBars = document.querySelectorAll('.skill-bar');
+        const skillObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const width = entry.target.getAttribute('data-width');
+                    entry.target.style.width = width + '%';
+                }
+            });
+        }, { threshold: 0.5 });
+
+        skillBars.forEach(bar => {
+            bar.style.width = '0%';
+            skillObserver.observe(bar);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Implementing Raft Consensus in Go - Jeremy Ma</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#F97316",
+                        "primary-dark": "#EA580C",
+                        "primary-light": "#FDBA74",
+                        "background-light": "#FAFAFA",
+                        "background-dark": "#0F172A",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E293B",
+                        "text-primary-light": "#1E293B",
+                        "text-primary-dark": "#F1F5F9",
+                        "text-secondary-light": "#64748B",
+                        "text-secondary-dark": "#94A3B8",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "Noto Sans SC", "sans-serif"],
+                        display: ["Poppins", "Noto Sans SC", "sans-serif"],
+                        mono: ["Fira Code", "monospace"],
+                    },
+                    typography: (theme) => ({
+                        DEFAULT: {
+                            css: {
+                                color: theme('colors.text-primary-light'),
+                                maxWidth: 'none',
+                                a: {
+                                    color: theme('colors.primary'),
+                                    textDecoration: 'none',
+                                    '&:hover': {
+                                        textDecoration: 'underline',
+                                    },
+                                },
+                                h1: { color: theme('colors.text-primary-light'), fontFamily: 'Poppins, sans-serif' },
+                                h2: { color: theme('colors.text-primary-light'), fontFamily: 'Poppins, sans-serif' },
+                                h3: { color: theme('colors.text-primary-light'), fontFamily: 'Poppins, sans-serif' },
+                                strong: { color: theme('colors.text-primary-light') },
+                                code: {
+                                    color: '#EF4444',
+                                    backgroundColor: '#F3F4F6',
+                                    padding: '2px 6px',
+                                    borderRadius: '4px',
+                                    fontWeight: '500',
+                                    fontFamily: 'Fira Code, monospace',
+                                },
+                                'code::before': { content: '""' },
+                                'code::after': { content: '""' },
+                                blockquote: {
+                                    borderLeftColor: theme('colors.primary'),
+                                    backgroundColor: 'rgba(249, 115, 22, 0.05)',
+                                    borderRadius: '0 8px 8px 0',
+                                    padding: '1rem 1.5rem',
+                                },
+                            },
+                        },
+                        dark: {
+                            css: {
+                                color: theme('colors.text-primary-dark'),
+                                h1: { color: theme('colors.text-primary-dark') },
+                                h2: { color: theme('colors.text-primary-dark') },
+                                h3: { color: theme('colors.text-primary-dark') },
+                                strong: { color: theme('colors.text-primary-dark') },
+                                code: {
+                                    color: '#F87171',
+                                    backgroundColor: '#374151',
+                                },
+                                blockquote: {
+                                    borderLeftColor: theme('colors.primary'),
+                                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                                    color: theme('colors.text-secondary-dark'),
+                                },
+                            },
+                        },
+                    }),
+                },
+            },
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+        #progress-bar {
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #F97316, #FDBA74);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            transition: width 0.1s ease;
+        }
+
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        .code-block::-webkit-scrollbar-thumb {
+            background: #4B5563;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark font-sans transition-colors duration-300">
+    <!-- Reading Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 transition-all duration-300">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-display font-bold text-lg shadow-lg shadow-primary/25">J</div>
+                    <span class="font-display font-semibold text-lg">Jeremy Ma</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="index.html">Home</a>
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="index.html#about">About</a>
+                    <a class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors text-sm font-medium" href="resume.html">Resume</a>
+                    <a class="text-primary font-semibold text-sm" href="blogs.html">Blog</a>
+                    <div class="flex items-center gap-3 pl-6 border-l border-gray-200 dark:border-gray-700">
+                        <button id="theme-toggle" class="p-2 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                            <span class="material-icons-outlined dark:hidden">dark_mode</span>
+                            <span class="material-icons-outlined hidden dark:block">light_mode</span>
+                        </button>
+                    </div>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-text-secondary-light dark:text-text-secondary-dark">
+                    <span class="material-icons-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700">
+            <div class="px-4 py-4 space-y-3">
+                <a class="block py-2" href="index.html">Home</a>
+                <a class="block py-2" href="index.html#about">About</a>
+                <a class="block py-2" href="resume.html">Resume</a>
+                <a class="block py-2 text-primary font-semibold" href="blogs.html">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+        <!-- Back to Articles -->
+        <div class="max-w-3xl mx-auto mb-8">
+            <a href="blogs.html" class="inline-flex items-center text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors group">
+                <span class="material-icons-outlined text-lg mr-1 group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                Back to Articles
+            </a>
+        </div>
+
+        <!-- Article Header -->
+        <header class="max-w-3xl mx-auto mb-10">
+            <div class="flex flex-wrap gap-2 mb-4">
+                <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs px-3 py-1 rounded-full font-medium">Distributed Systems</span>
+                <span class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full font-medium">Golang</span>
+                <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs px-3 py-1 rounded-full font-medium">Raft</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-text-primary-light dark:text-text-primary-dark tracking-tight mb-6 leading-tight">
+                Implementing Raft Consensus: Leader Election and Log Replication in Go
+            </h1>
+            <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-6">
+                <div class="flex items-center">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-display font-bold text-lg shadow-md">J</div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">
+                            Wufangjie (Jeremy) Ma
+                        </p>
+                        <div class="flex items-center gap-2 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                            <time datetime="2025-02-14">Feb 14, 2025</time>
+                            <span>-</span>
+                            <span>8 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-text-secondary-light dark:text-text-secondary-dark transition-colors" title="Share">
+                        <span class="material-icons-outlined">share</span>
+                    </button>
+                    <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-text-secondary-light dark:text-text-secondary-dark transition-colors" title="Bookmark">
+                        <span class="material-icons-outlined">bookmark_border</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Article Content -->
+        <article class="max-w-3xl mx-auto prose prose-lg dark:prose-dark prose-headings:font-display prose-a:text-primary hover:prose-a:underline">
+            <p class="lead text-xl text-text-secondary-light dark:text-text-secondary-dark !mt-0">
+                Building distributed systems is hard. Ensuring consistency across unreliable networks is even harder. In this post, we'll dive deep into the Raft consensus algorithm, specifically focusing on the implementation details of Leader Election and Log Replication using Go.
+            </p>
+
+            <h2 id="introduction">Introduction to Consensus</h2>
+            <p>
+                Raft is a consensus algorithm that is designed to be easy to understand. It's equivalent to Paxos in fault-tolerance and performance. The difference is that it's decomposed into relatively independent subproblems, and it cleanly addresses all major pieces needed for practical systems.
+            </p>
+            <p>
+                During my time working on <strong>Zoom TeamChat</strong> backend infrastructure, specifically optimizing high-concurrency message delivery for webinars with over <span class="text-primary font-semibold">100k+ participants</span>, understanding the nuances of data consistency became crucial.
+            </p>
+
+            <h2 id="architecture">System Architecture</h2>
+            <p>
+                Before writing code, let's visualize the state machine. A Raft node can be in one of three states:
+            </p>
+            <ul>
+                <li><strong>Follower</strong>: Passive state, responds to requests from leaders and candidates.</li>
+                <li><strong>Candidate</strong>: Active state, requesting votes to become leader.</li>
+                <li><strong>Leader</strong>: Handles all client requests and replicates logs to followers.</li>
+            </ul>
+
+            <!-- Diagram -->
+            <div class="my-8 p-6 bg-gray-50 dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-700">
+                <div class="flex justify-center">
+                    <div class="flex gap-4 items-center">
+                        <div class="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold shadow-lg">S1</div>
+                        <div class="h-1 w-10 bg-gray-300 dark:bg-gray-600"></div>
+                        <div class="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-white font-bold shadow-lg ring-4 ring-primary/30 z-10">Leader</div>
+                        <div class="h-1 w-10 bg-gray-300 dark:bg-gray-600"></div>
+                        <div class="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold shadow-lg">S3</div>
+                    </div>
+                </div>
+                <p class="text-center text-sm text-text-secondary-light dark:text-text-secondary-dark mt-4 italic">Figure 1: Simple 3-node Raft Cluster</p>
+            </div>
+
+            <h2 id="leader-election">Leader Election Implementation</h2>
+            <p>
+                In Go, we can model the Raft server using a struct that holds the state. Here is a simplified version of the structure used in the <code>MIT 6.5840</code> course labs.
+            </p>
+
+            <!-- Code Block -->
+            <div class="not-prose my-6 relative group">
+                <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white text-xs px-3 py-1.5 rounded-md transition-colors flex items-center gap-1">
+                        <span class="material-icons-outlined text-sm">content_copy</span>
+                        Copy
+                    </button>
+                </div>
+                <div class="bg-gray-900 rounded-xl overflow-hidden shadow-lg border border-gray-800">
+                    <div class="flex items-center px-4 py-3 bg-gray-800 border-b border-gray-700">
+                        <div class="flex gap-1.5">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <span class="ml-4 text-xs text-gray-400 font-mono">raft.go</span>
+                    </div>
+                    <div class="p-4 overflow-x-auto code-block">
+<pre class="font-mono text-sm text-gray-300 leading-relaxed"><code><span class="text-purple-400">type</span> Raft <span class="text-purple-400">struct</span> {
+    mu        sync.Mutex          <span class="text-gray-500">// Lock to protect shared access</span>
+    peers     []*labrpc.ClientEnd <span class="text-gray-500">// RPC end points of all peers</span>
+    persister *Persister          <span class="text-gray-500">// Object to hold persisted state</span>
+    me        <span class="text-purple-400">int</span>                 <span class="text-gray-500">// this peer's index</span>
+    dead      <span class="text-purple-400">int32</span>               <span class="text-gray-500">// set by Kill()</span>
+
+    <span class="text-gray-500">// Persistent state on all servers</span>
+    currentTerm <span class="text-purple-400">int</span>
+    votedFor    <span class="text-purple-400">int</span>
+    log         []LogEntry
+
+    <span class="text-gray-500">// Volatile state on all servers</span>
+    commitIndex <span class="text-purple-400">int</span>
+    lastApplied <span class="text-purple-400">int</span>
+
+    <span class="text-gray-500">// Leader state</span>
+    nextIndex   []<span class="text-purple-400">int</span>
+    matchIndex  []<span class="text-purple-400">int</span>
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                The key to Leader Election is the randomized timeout. If a follower doesn't hear from a leader within a certain timeframe (e.g., 150-300ms), it starts an election.
+            </p>
+
+            <blockquote>
+                <p>"The randomized election timeouts are crucial to prevent split votes where nodes constantly restart elections without a winner emerging."</p>
+            </blockquote>
+
+            <h3 id="challenges">Common Pitfalls</h3>
+            <p>
+                While implementing this for the distributed systems course, I encountered several race conditions. Specifically, locking granularity is tricky. Holding a lock while making an RPC call is a recipe for deadlock.
+            </p>
+
+            <h2 id="log-replication">Log Replication</h2>
+            <p>
+                Once a leader is elected, it begins servicing client requests. Each client request contains a command to be executed by the replicated state machines. The leader appends the command to its log as a new entry, then issues AppendEntries RPCs in parallel to each of the other servers.
+            </p>
+
+            <h2 id="conclusion">Conclusion</h2>
+            <p>
+                Raft provides a robust foundation for building consistent distributed systems. By understanding the core mechanics of Leader Election and Log Replication, we can build systems that are resilient to failure.
+            </p>
+            <p>
+                In the next part, we will explore <strong>Log Compaction</strong> and snapshotting to prevent the log from growing indefinitely.
+            </p>
+
+            <hr class="my-10 border-gray-200 dark:border-gray-700"/>
+
+            <!-- Related Reading -->
+            <div class="not-prose">
+                <h3 class="text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark mb-6">Related Reading</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <a href="blog-post.html" class="block p-5 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary transition-all group shadow-sm hover:shadow-md">
+                        <h4 class="font-semibold text-text-primary-light dark:text-text-primary-dark group-hover:text-primary transition-colors mb-2">Understanding Paxos</h4>
+                        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">A comparison between Raft and Paxos algorithms.</p>
+                    </a>
+                    <a href="blog-post.html" class="block p-5 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary transition-all group shadow-sm hover:shadow-md">
+                        <h4 class="font-semibold text-text-primary-light dark:text-text-primary-dark group-hover:text-primary transition-colors mb-2">Go Concurrency Patterns</h4>
+                        <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Best practices for channels and goroutines.</p>
+                    </a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Newsletter Section -->
+        <section class="max-w-3xl mx-auto mt-16 p-8 bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/5 rounded-2xl border border-primary/20 text-center">
+            <span class="material-icons-outlined text-4xl text-primary mb-3">mail</span>
+            <h3 class="text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark mb-2">Subscribe to my newsletter</h3>
+            <p class="text-text-secondary-light dark:text-text-secondary-dark mb-6 text-sm">
+                Get the latest articles on distributed systems and backend engineering delivered to your inbox.
+            </p>
+            <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <input type="email" placeholder="Enter your email" class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 bg-surface-light dark:bg-surface-dark focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm px-4 py-3"/>
+                <button type="button" class="bg-primary hover:bg-primary-dark text-white font-medium py-3 px-6 rounded-lg transition-colors shadow-sm hover:shadow-md">
+                    Subscribe
+                </button>
+            </form>
+        </section>
+
+        <!-- Author Section -->
+        <section class="max-w-3xl mx-auto mt-12 p-6 bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-gray-700/50 shadow-sm">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-display font-bold text-2xl shadow-lg flex-shrink-0">J</div>
+                <div class="text-center sm:text-left">
+                    <h4 class="font-display font-bold text-text-primary-light dark:text-text-primary-dark mb-1">Wufangjie (Jeremy) Ma</h4>
+                    <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-3">Backend Software Engineer at Zoom. Passionate about distributed systems, performance optimization, and emerging AI technologies.</p>
+                    <div class="flex justify-center sm:justify-start gap-3">
+                        <a href="https://github.com/mwfj" target="_blank" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/mwfj/" target="_blank" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-surface-light dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 py-10 mt-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+            <div class="flex gap-6 mb-6">
+                <a href="https://github.com/mwfj" target="_blank" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/mwfj/" target="_blank" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+            </div>
+            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                &copy; 2025 Wufangjie (Jeremy) Ma. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+    </script>
+</body>
+</html>
